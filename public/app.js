@@ -1,6 +1,6 @@
 (()=>{'use strict';
-const CATEGORIES=['产品页面','侧边购物车','产品模块设计','类目页升级'];
-const ICONS=['box','cart','layers','layout'];
+const CATEGORIES=['产品页面','侧边购物车','产品模块设计','类目页升级','Banner'];
+const ICONS=['box','cart','layers','layout','image'];
 const STATUS=['todo','doing','done'], LABEL={todo:'未完成',doing:'进行中',done:'已完成'};
 const ROLES={admin:'管理员',operator:'运营',developer:'开发'};
 const BUCKET='requirements-private';
