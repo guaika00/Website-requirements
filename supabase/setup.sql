@@ -1,3 +1,11 @@
+-- V2 legacy setup. Do NOT rerun after installing the v3 multi-project upgrade.
+-- On an empty database, run this original setup ONCE, then upgrade_multi_project.sql.
+DO $$ BEGIN
+ IF to_regclass('public.board_projects') IS NOT NULL THEN
+   RAISE EXCEPTION 'Multi-project v3 is already installed. Do NOT rerun legacy setup.sql; use upgrade_multi_project.sql instead.';
+ END IF;
+END $$;
+
 -- Website requirements collaboration board / Supabase schema
 -- Run once in Supabase SQL Editor. A second run is safe for the same schema.
 -- After running, replace YOU@COMPANY.COM in the bootstrap statement in README.
@@ -33,7 +41,7 @@ create table if not exists public.requirements (
   description text not null default '',
   links text[] not null default '{}',
   sources text[] not null default '{}',
-  references text[] not null default '{}',
+  "references" text[] not null default '{}',
   source text not null default '协作新增',
   is_custom boolean not null default true,
   sort_order integer not null default 999999,
