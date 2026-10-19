@@ -1,0 +1,12 @@
+{
+  "name": "website-requirements-team-board",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-config.mjs",
+    "import:seed": "node --env-file=.env.local scripts/import-seed.mjs"
+  },
+  "dependencies": {"@supabase/supabase-js": "^2.80.0"},
+  "engines": {"node": ">=20.10.0"}
+}

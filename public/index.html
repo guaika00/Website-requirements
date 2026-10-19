@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f7f8fb">
+<meta name="description" content="网站设计需求与开发进度追踪看板，支持离线使用与本地保存。">
+<title>网站设计需求 · 项目进度看板</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<symbol id="ic-logo" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+<symbol id="ic-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4"/></symbol>
+<symbol id="ic-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"/><circle cx="19" cy="20" r="1"/><path d="M2 3h2l3.3 13h12.3l2.4-9H5"/></symbol>
+<symbol id="ic-layers" viewBox="0 0 24 24"><path d="M12 2 2 8l10 6 10-6-10-6Zm-10 10 10 6 10-6M2 16l10 6 10-6"/></symbol>
+<symbol id="ic-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="ic-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="ic-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+<symbol id="ic-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="ic-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></symbol>
+<symbol id="ic-upload" viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4M4 17v4h16v-4"/></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="ic-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+<symbol id="ic-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></symbol>
+<symbol id="ic-link" viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></symbol>
+<symbol id="ic-note" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></symbol>
+<symbol id="ic-external" viewBox="0 0 24 24"><path d="M13 5h6v6M19 5l-9 9"/><path d="M19 13v6H5V5h6"/></symbol>
+<symbol id="ic-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="ic-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+<symbol id="ic-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+</svg>
+<div class="sidebar-backdrop" id="sideBackdrop"></div>
+<div class="app" id="appShell" hidden>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-icon"><svg class="ic"><use href="#ic-logo"/></svg></div><div><div class="brand-name">PROJECT TRACKER</div><div class="brand-sub">网站设计需求管理</div></div></div>
+  <div class="nav-label">工作空间</div>
+  <nav class="nav" id="nav"><!-- generated --></nav>
+  <div class="side-divide"></div>
+  <div class="nav-label">相关资源</div>
+  <nav class="nav"><button type="button" class="nav-button" id="extrasNav"><span class="nav-icon"><svg class="ic"><use href="#ic-image"/></svg></span><span>其他参考素材</span><span class="count">2</span></button></nav>
+  <div class="sidebar-foot"><div class="side-foot-pill live-indicator" id="liveIndicator"><i></i><span id="liveText">正在连接数据库</span></div><div id="memberBadge" class="user-card"></div><button class="btn" type="button" id="logoutBtn">退出登录</button></div>
+</aside>
+<main class="main">
+  <button class="mobile-menu" id="mobileMenu" title="打开分类导航" aria-label="打开分类导航"><svg class="ic big"><use href="#ic-menu"/></svg></button>
+  <header class="topbar">
+    <div><div class="eyebrow"><span class="rule"></span> WEBSITE DEVELOPMENT · ROADMAP</div><h1 class="headline">网站设计需求看板</h1><p class="subtitle">多人实时协作：运营维护需求，开发更新进度。完整保留原始 Excel 需求及参考资料。</p></div>
+    <div class="top-actions"><button type="button" class="btn" id="refreshBtn"><svg class="ic small"><use href="#ic-upload"/></svg> 同步最新</button><button type="button" class="btn" id="membersBtn" hidden>成员管理</button><button type="button" class="btn" id="migrateBtn" hidden>导入旧版进度</button><button type="button" class="btn primary" id="addBtn" hidden><svg class="ic small"><use href="#ic-plus"/></svg> 新增需求</button></div>
+  </header>
+  <section class="metrics" id="metrics" aria-label="需求进度统计"></section>
+  <div id="requirementsView">
+    <div class="section-heading"><div><h2 id="viewHeading">全部需求</h2><div class="section-caption" id="viewDescription">按需求逐项推进，状态修改后自动保存</div></div><div class="section-count" id="resultCount"></div></div>
+    <div class="toolbar"><label class="search-field"><svg class="ic"><use href="#ic-search"/></svg><input id="searchInput" type="search" placeholder="搜索需求名称、说明或备注…" autocomplete="off"></label><div class="filter-tabs" id="filterTabs"></div><div class="tools-inline"><select id="sortSelect" class="sort-field" aria-label="需求排序"><option value="original">按原表顺序</option><option value="status">按进度排序</option><option value="updated">最近更新</option></select><button type="button" class="btn" id="csvBtn" title="导出所有需求的进度 CSV 表格"><svg class="ic small"><use href="#ic-download"/></svg> 导出报表</button></div></div>
+    <div id="taskList" class="list"></div>
+  </div>
+  <div id="extrasView" hidden><div class="section-heading gallery-header"><div><h2>其他参考素材</h2><p class="section-caption">原 Excel「Sheet3」中的独立图片素材</p></div><div class="section-count">共 2 张</div></div><p class="extras-note">这些图片在原表中没有关联具体需求，因此单独收纳，避免遗漏。点击图片可放大查看。</p><div id="extrasGrid" class="extras-grid"></div></div>
+  <footer class="bottom-note">需求与进度实时保存在 Supabase，团队成员在不同设备上可以同步更新。<br>请使用授权账号登录。参考图片存储在私有空间中。</footer>
+</main>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<dialog id="editorDialog" aria-labelledby="editorTitle"><form id="editorForm"><div class="modal-head"><div><h3 id="editorTitle">新增网站需求</h3><p>运营录入需求内容，开发可以直接看到并更新进度。</p></div><button type="button" class="icon-btn" data-close="editorDialog" aria-label="关闭"><svg class="ic"><use href="#ic-x"/></svg></button></div><div class="modal-body"><div class="form-grid"><div class="field"><label for="editTitle">需求名称 *</label><input id="editTitle" maxlength="160" required placeholder="例如：移动端产品详情页优化"></div><div class="field"><label for="editCategory">需求分类 *</label><select id="editCategory"></select></div><div class="field"><label for="editDescription">需求说明 / 验收标准</label><textarea id="editDescription" placeholder="说明背景、改动内容和期望结果"></textarea></div><div class="field"><label for="editLinks">参考链接（一行一条）</label><textarea id="editLinks" placeholder="https://example.com"></textarea></div><div class="field"><label>已关联的图片（取消勾选即可从该需求移除）</label><div class="editor-preview" id="existingImageList"></div></div><div class="field"><label for="editImages">上传参考图片</label><input class="files-input" id="editImages" type="file" accept="image/png,image/jpeg,image/webp" multiple><div class="field-hint">每张不超过 10MB，上传到 Supabase 私有 Storage，仅授权成员可查看。</div></div></div></div><div class="modal-foot"><button type="button" class="btn" data-close="editorDialog">取消</button><button type="submit" class="btn primary" id="editorSave">保存需求</button></div></form></dialog>
+<dialog id="previewDialog" class="preview-dialog" aria-label="图片放大预览"><div class="preview-header"><span id="previewTitle">参考图片</span><button class="icon-btn" type="button" id="previewClose" aria-label="关闭图片"><svg class="ic big"><use href="#ic-x"/></svg></button></div><div class="preview-main"><img id="previewImage" alt="参考截图原图"></div><div class="preview-foot"><button type="button" class="btn" id="previewPrev">← 上一张</button><span id="previewCounter" class="preview-count"></span><button type="button" class="btn" id="previewNext">下一张 →</button></div></dialog>
+
+<section id="authScreen" class="auth-screen"><div class="auth-card"><div class="brand-icon"><svg class="ic big"><use href="#ic-logo"/></svg></div><h1 id="authTitle">登录项目看板</h1><p>运营添加需求，开发追踪进度。只有已加入团队的账号才有访问权限。</p><form id="authForm"><label for="authEmail">工作邮箱</label><input id="authEmail" type="email" autocomplete="email" required placeholder="yourname@company.com"><label for="authPassword">密码</label><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="请输入密码"><button class="btn primary" type="submit" id="authSubmit">登录看板</button></form><div id="authMessage" class="auth-message" aria-live="polite"></div><button id="authSwitch" class="auth-switch" type="button">首次使用？注册账号</button><p class="auth-note">注册成功并验证邮箱后，管理员需将邮箱添加到成员列表才能访问。</p></div></section>
+<section id="accessScreen" class="access-screen" hidden><div class="auth-card"><h1>账号暂未获得权限</h1><p id="accessEmail"></p><p>请联系管理员，将此邮箱添加到「成员管理」后重新登录。</p><button class="btn primary" id="accessRetry" type="button">重新检查权限</button><button class="btn" id="accessLogout" type="button">退出账号</button></div></section>
+<dialog id="membersDialog"><div class="modal-head"><div><h3>团队成员与权限</h3><p>先添加邮箱白名单，再让成员使用该邮箱注册 / 登录。</p></div><button class="icon-btn" data-close="membersDialog" type="button"><svg class="ic"><use href="#ic-x"/></svg></button></div><div class="modal-body"><div class="hint-prompt">管理员：全部管理 · 运营：维护需求内容和图片 · 开发：更新进度和备注。权限由数据库 RLS 实际执行。</div><div id="membersList" class="member-list"></div><form id="memberForm"><div class="inline-two"><div class="field"><label for="memberEmail">添加成员邮箱</label><input id="memberEmail" type="email" required placeholder="colleague@company.com"></div><div class="field"><label for="memberRole">角色</label><select id="memberRole"><option value="operator">运营</option><option value="developer">开发</option><option value="admin">管理员</option></select></div></div><button class="btn primary" type="submit" id="memberAdd">添加成员</button></form></div><div class="modal-foot"><button type="button" class="btn" data-close="membersDialog">关闭</button></div></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
+<script src="./config.js" defer></script>
+<script src="./app.js" defer></script>
+</body></html>
