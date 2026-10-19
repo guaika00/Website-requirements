@@ -1,78 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f7f8fb">
-<meta name="description" content="多项目需求协作看板，支持按项目成员权限隔离、自由分类、优先级和执行顺序。">
-<title>网站设计需求 · 项目进度看板</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f6f8fb">
+<meta name="description" content="多项目需求协作平台，运营管理项目与验收，开发反馈进度，只读成员查看报表。">
+<title>PROJECT TRACKER · 团队需求协作</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-<symbol id="ic-logo" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></symbol>
-<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
-<symbol id="ic-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4"/></symbol>
-<symbol id="ic-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"/><circle cx="19" cy="20" r="1"/><path d="M2 3h2l3.3 13h12.3l2.4-9H5"/></symbol>
-<symbol id="ic-layers" viewBox="0 0 24 24"><path d="M12 2 2 8l10 6 10-6-10-6Zm-10 10 10 6 10-6M2 16l10 6 10-6"/></symbol>
-<symbol id="ic-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></symbol>
-<symbol id="ic-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
-<symbol id="ic-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
-<symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-<symbol id="ic-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
-<symbol id="ic-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-<symbol id="ic-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></symbol>
-<symbol id="ic-upload" viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4M4 17v4h16v-4"/></symbol>
-<symbol id="ic-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-<symbol id="ic-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
-<symbol id="ic-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></symbol>
-<symbol id="ic-link" viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></symbol>
-<symbol id="ic-note" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></symbol>
-<symbol id="ic-external" viewBox="0 0 24 24"><path d="M13 5h6v6M19 5l-9 9"/><path d="M19 13v6H5V5h6"/></symbol>
-<symbol id="ic-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-<symbol id="ic-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
-<symbol id="ic-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+<svg xmlns="http://www.w3.org/2000/svg" class="symbols" aria-hidden="true">
+<symbol id="i-logo" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol>
+<symbol id="i-note" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h3"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M7 12h10M10 17h4"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.5 6.5l2.2 2.2m6.6 6.6 2.2 2.2M17.5 6.5l-2.2 2.2m-6.6 6.6-2.2 2.2"/><circle cx="12" cy="12" r="4"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1"/><path d="m4 19 6-6 4 4 3-4 4 4"/></symbol>
+<symbol id="i-external" viewBox="0 0 24 24"><path d="M13 4h7v7M20 4l-9 9M20 14v6H4V4h6"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 20a7 7 0 0 1 14 0M17 5a3 3 0 0 1 0 6M18 14a6 6 0 0 1 4 6"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M4 4h16v13H9l-5 4z"/><path d="M8 9h8M8 13h5"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V4M5 4c5-3 9 3 15 0v12c-6 3-10-3-15 0"/></symbol>
+<symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 2 10 19H2zM12 9v5M12 18v.2"/></symbol>
 </svg>
-<div class="sidebar-backdrop" id="sideBackdrop"></div>
-<div class="app" id="appShell" hidden>
-<aside class="sidebar" id="sidebar">
-  <div class="brand"><div class="brand-icon"><svg class="ic"><use href="#ic-logo"/></svg></div><div><div class="brand-name">PROJECT TRACKER</div><div class="brand-sub">网站设计需求管理</div></div></div>
-  <div class="workspace-picker"><label for="projectSelect">当前项目</label><select id="projectSelect" aria-label="选择项目"></select><button class="workspace-manage" type="button" id="projectManageBtn" hidden>＋ 项目管理</button></div>
-  <div class="nav-label">项目分类</div>
-  <nav class="nav" id="nav"><!-- generated --></nav>
-  <div class="side-divide"></div>
-  <div class="nav-label">相关资源</div>
-  <nav class="nav"><button type="button" class="nav-button" id="extrasNav"><span class="nav-icon"><svg class="ic"><use href="#ic-image"/></svg></span><span>其他参考素材</span><span class="count">2</span></button></nav>
-  <div class="sidebar-foot"><div class="side-foot-pill live-indicator" id="liveIndicator"><i></i><span id="liveText">正在连接数据库</span></div><div id="memberBadge" class="user-card"></div><button class="btn" type="button" id="logoutBtn">退出登录</button></div>
-</aside>
-<main class="main">
-  <button class="mobile-menu" id="mobileMenu" title="打开分类导航" aria-label="打开分类导航"><svg class="ic big"><use href="#ic-menu"/></svg></button>
-  <header class="topbar">
-    <div><div class="eyebrow"><span class="rule"></span> WEBSITE DEVELOPMENT · ROADMAP</div><h1 class="headline">网站设计需求看板</h1><p class="subtitle"><strong id="selectedProjectName">当前项目</strong> · 按项目独立协作，运营维护需求，开发更新进度。</p></div>
-    <div class="top-actions"><button type="button" class="btn" id="refreshBtn"><svg class="ic small"><use href="#ic-upload"/></svg> 同步最新</button><button type="button" class="btn" id="categoryManageBtn" hidden>分类管理</button><button type="button" class="btn" id="membersBtn" hidden>项目成员</button><button type="button" class="btn" id="migrateBtn" hidden>导入旧版进度</button><button type="button" class="btn primary" id="addBtn" hidden><svg class="ic small"><use href="#ic-plus"/></svg> 新增需求</button></div>
-  </header>
-  <section class="metrics" id="metrics" aria-label="需求进度统计"></section>
-  <div id="requirementsView">
-    <div class="section-heading"><div><h2 id="viewHeading">全部需求</h2><div class="section-caption" id="viewDescription">按需求逐项推进，状态修改后自动保存</div></div><div class="section-count" id="resultCount"></div></div>
-    <div class="toolbar"><label class="search-field"><svg class="ic"><use href="#ic-search"/></svg><input id="searchInput" type="search" placeholder="搜索需求名称、说明或备注…" autocomplete="off"></label><div class="filter-tabs" id="filterTabs"></div><div class="tools-inline"><select id="priorityFilter" class="sort-field" aria-label="优先级筛选"><option value="all">全部优先级</option><option value="urgent">加急</option><option value="important">重点</option><option value="normal">普通</option></select><select id="sortSelect" class="sort-field" aria-label="需求排序"><option value="plan">执行顺序</option><option value="priority">按优先级</option><option value="status">按进度排序</option><option value="updated">最近更新</option></select><button type="button" class="btn" id="csvBtn" title="导出所有需求的进度 CSV 表格"><svg class="ic small"><use href="#ic-download"/></svg> 导出报表</button></div></div>
-    <div id="taskList" class="list"></div>
-  </div>
-  <div id="extrasView" hidden><div class="section-heading gallery-header"><div><h2>其他参考素材</h2><p class="section-caption">原 Excel「Sheet3」中的独立图片素材</p></div><div class="section-count">共 2 张</div></div><p class="extras-note">这些图片在原表中没有关联具体需求，因此单独收纳，避免遗漏。点击图片可放大查看。</p><div id="extrasGrid" class="extras-grid"></div></div>
-  <footer class="bottom-note">需求、项目、分类与进度均保存在 Supabase；按项目授权访问，自动同步更新。<br>请使用授权账号登录。参考图片存储在私有空间中。</footer>
-</main>
+<div class="overlay-sidebar" id="sidebarShade" hidden></div>
+<div id="shell" class="shell" hidden>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark"><svg><use href="#i-logo"/></svg></div><div><b>PROJECT TRACKER</b><small>团队需求协作平台</small></div></div>
+    <div class="side-caption">工作空间 <button class="ghost-icon" type="button" id="createProjectQuick" title="创建项目" aria-label="创建项目" hidden><svg><use href="#i-plus"/></svg></button></div>
+    <nav id="projectNav" class="side-list" aria-label="项目列表"></nav>
+    <div class="side-separator"></div><div class="side-caption">项目分类</div>
+    <nav id="categoryNav" class="side-list" aria-label="分类列表"></nav>
+    <div class="side-separator"></div><button class="side-item" type="button" id="assetsNav"><svg><use href="#i-image"/></svg><span>其他参考素材</span><em id="assetCount">0</em></button>
+    <div class="sidebar-end"><button class="side-logout" id="sidebarSettings" type="button" hidden style="margin-bottom:12px">项目设置 / 管理成员</button><div class="sync-dot"><i id="syncLight"></i><span id="syncText">正在连接</span></div><div class="user-summary"><div class="user-avatar" id="userAvatar">U</div><div><b id="userName"></b><small id="userRole"></small></div></div><button type="button" class="side-logout" id="logoutBtn">退出登录</button></div>
+  </aside>
+  <main class="main">
+    <header class="top-header"><div class="top-left"><button type="button" class="icon-button mobile-toggle" id="menuToggle" aria-label="打开菜单"><svg><use href="#i-menu"/></svg></button><div class="top-context"><div class="kicker">WORKSPACE / <span id="breadcrumbProject">项目</span></div><div class="header-title"><h1 id="projectHeading">项目需求</h1><span id="projectCount" class="header-count"></span></div></div></div><div class="top-right"><select id="mobileProjectSelect" class="mobile-project" aria-label="切换项目"></select><button type="button" class="icon-button" id="refreshBtn" title="同步最新" aria-label="同步最新"><svg><use href="#i-refresh"/></svg></button><button type="button" class="btn btn-light" id="settingsBtn" hidden><svg><use href="#i-settings"/></svg><span class="desktop-label">项目设置</span></button><button type="button" class="btn btn-dark" id="addTaskBtn" hidden><svg><use href="#i-plus"/></svg>新增需求</button></div></header>
+    <div class="content">
+      <div class="overview-heading"><div><h2>项目概况</h2><p id="projectDescriptionText">运营安排需求、开发记录进度，所有成员保持同步。</p></div><button type="button" id="reportBtn" class="btn btn-light"><svg><use href="#i-download"/></svg>查看报表</button></div>
+      <section id="summary" class="summary-grid" aria-label="统计概况"></section>
+      <section class="work-section"><div class="section-head"><div><h2><span id="taskSectionTitle">需求列表</span> <span id="listTotal" class="section-num"></span></h2><p>按执行顺序开展工作，重要变动保留历史记录</p></div></div>
+        <div id="viewTabs" class="view-tabs" role="group" aria-label="任务视图">
+          <button type="button" class="view-tab active" data-view="all">全部需求</button><button type="button" class="view-tab" data-view="mine">我的待办</button><button type="button" class="view-tab" data-view="review">待验收</button><button type="button" class="view-tab" data-view="focus">加急重点</button>
+        </div>
+        <div class="toolbar"><label class="searchbox"><svg><use href="#i-search"/></svg><input type="search" id="searchInput" placeholder="搜索标题、说明、负责人…" autocomplete="off"></label><select class="select-compact" id="statusFilter" aria-label="筛选状态"><option value="all">全部状态</option><option value="todo">待开始</option><option value="doing">进行中</option><option value="review">待验收</option><option value="done">已完成</option><option value="blocked">阻塞中</option></select><select class="select-compact" id="sortSelect" aria-label="任务排序"><option value="plan">执行顺序</option><option value="priority">按优先级</option><option value="updated">最近更新</option><option value="due">截止日期</option></select></div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+      <footer class="footnote">项目和成员权限由 Supabase 控制。需求与进度每 20 秒检查更新；正在编辑的内容不会被自动清空。</footer>
+    </div>
+  </main>
 </div>
-
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<dialog id="editorDialog" aria-labelledby="editorTitle"><form id="editorForm"><div class="modal-head"><div><h3 id="editorTitle">新增网站需求</h3><p>运营录入需求内容，开发可以直接看到并更新进度。</p></div><button type="button" class="icon-btn" data-close="editorDialog" aria-label="关闭"><svg class="ic"><use href="#ic-x"/></svg></button></div><div class="modal-body"><div class="form-grid"><div class="field"><label for="editTitle">需求名称 *</label><input id="editTitle" maxlength="160" required placeholder="例如：移动端产品详情页优化"></div><div class="field"><label for="editCategory">需求分类 *</label><select id="editCategory"></select></div><div class="inline-two"><div class="field"><label for="editPriority">优先级</label><select id="editPriority"><option value="normal">普通</option><option value="important">重点</option><option value="urgent">加急</option></select></div><div class="field"><label for="editPosition">执行顺序（1 为最先）</label><input type="number" min="1" id="editPosition" placeholder="默认为最后"></div></div><div class="field"><label for="editDescription">需求说明 / 验收标准</label><textarea id="editDescription" placeholder="说明背景、改动内容和期望结果"></textarea></div><div class="field"><label for="editLinks">参考链接（一行一条）</label><textarea id="editLinks" placeholder="https://example.com"></textarea></div><div class="field"><label>已关联的图片（取消勾选即可从该需求移除）</label><div class="editor-preview" id="existingImageList"></div></div><div class="field"><label for="editImages">上传参考图片</label><input class="files-input" id="editImages" type="file" accept="image/png,image/jpeg,image/webp" multiple><div class="field-hint">每张不超过 10MB，上传到 Supabase 私有 Storage，仅授权成员可查看。</div></div></div></div><div class="modal-foot"><button type="button" class="btn" data-close="editorDialog">取消</button><button type="submit" class="btn primary" id="editorSave">保存需求</button></div></form></dialog>
-<dialog id="previewDialog" class="preview-dialog" aria-label="图片放大预览"><div class="preview-header"><span id="previewTitle">参考图片</span><button class="icon-btn" type="button" id="previewClose" aria-label="关闭图片"><svg class="ic big"><use href="#ic-x"/></svg></button></div><div class="preview-main"><img id="previewImage" alt="参考截图原图"></div><div class="preview-foot"><button type="button" class="btn" id="previewPrev">← 上一张</button><span id="previewCounter" class="preview-count"></span><button type="button" class="btn" id="previewNext">下一张 →</button></div></dialog>
 
-<section id="authScreen" class="auth-screen"><div class="auth-card"><div class="brand-icon"><svg class="ic big"><use href="#ic-logo"/></svg></div><h1 id="authTitle">登录项目看板</h1><p>运营添加需求，开发追踪进度。只有已加入团队的账号才有访问权限。</p><form id="authForm"><label for="authEmail">工作邮箱</label><input id="authEmail" type="email" autocomplete="email" required placeholder="yourname@company.com"><label for="authPassword">密码</label><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="请输入密码"><button class="btn primary" type="submit" id="authSubmit">登录看板</button></form><div id="authMessage" class="auth-message" aria-live="polite"></div><button id="authSwitch" class="auth-switch" type="button">首次使用？注册账号</button><p class="auth-note">注册成功并验证邮箱后，还需由管理员分配至少一个项目才有查看权限。</p></div></section>
-<section id="accessScreen" class="access-screen" hidden><div class="auth-card"><h1>账号暂未获得权限</h1><p id="accessEmail"></p><p>请联系管理员，将此邮箱分配到至少一个项目后重新登录。</p><button class="btn primary" id="accessRetry" type="button">重新检查权限</button><button class="btn" id="accessLogout" type="button">退出账号</button></div></section>
-<dialog id="membersDialog"><div class="modal-head"><div><h3>当前项目 · 成员管理</h3><p>成员只能看到分配给他们的项目；同一项目可由多人共同负责。</p></div><button class="icon-btn" data-close="membersDialog" type="button" aria-label="关闭"><svg class="ic"><use href="#ic-x"/></svg></button></div><div class="modal-body"><div class="hint-prompt">全局管理员可访问所有项目；运营可管理所在项目需求、分类和排序，开发可管理进度与备注。团队邮箱可按需要加入多个项目。</div><div id="membersList" class="member-list"></div><form id="memberForm"><div class="inline-two"><div class="field"><label for="memberEmail">成员邮箱</label><input id="memberEmail" type="email" required placeholder="colleague@company.com"></div><div class="field"><label for="memberRole">该项目的角色</label><select id="memberRole"><option value="operator">运营</option><option value="developer">开发</option></select></div></div><button class="btn primary" type="submit" id="memberAdd">添加到当前项目</button></form></div><div class="modal-foot"><button class="btn" type="button" data-close="membersDialog">关闭</button></div></dialog>
-<dialog id="categoriesDialog"><div class="modal-head"><div><h3>当前项目 · 分类管理</h3><p>分类不再写死。可新增、改名、调整顺序、停用或删除空分类。</p></div><button class="icon-btn" data-close="categoriesDialog" type="button" aria-label="关闭"><svg class="ic"><use href="#ic-x"/></svg></button></div><div class="modal-body"><div id="categoriesList" class="category-manage-list"></div><form id="categoryForm" class="category-add-form"><div class="field"><label for="categoryName">新增分类名称</label><input id="categoryName" required maxlength="60" placeholder="如：首页装修、支付流程、移动端…"></div><button type="submit" class="btn primary" id="categoryAdd">添加分类</button></form></div><div class="modal-foot"><button class="btn" type="button" data-close="categoriesDialog">完成</button></div></dialog>
-<dialog id="projectsDialog"><div class="modal-head"><div><h3>项目管理</h3><p>为不同运营建立独立工作空间，人员与需求数据互不混用。</p></div><button class="icon-btn" data-close="projectsDialog" type="button" aria-label="关闭"><svg class="ic"><use href="#ic-x"/></svg></button></div><div class="modal-body"><div id="projectsList" class="project-manage-list"></div><form id="projectForm" class="category-add-form"><div class="field"><label for="projectName">新项目名称</label><input id="projectName" maxlength="100" required placeholder="如：WOSADO 官网、Aferiy 西班牙站"></div><div class="field"><label for="projectDescription">项目备注（可选）</label><input id="projectDescription" maxlength="250" placeholder="例如：2026 Q4 全站升级"></div><button type="submit" class="btn primary" id="projectAdd">创建新项目</button></form></div><div class="modal-foot"><button class="btn" type="button" data-close="projectsDialog">关闭</button></div></dialog>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
-<script src="./config.js" defer></script>
-<script src="./app.js" defer></script>
+<div id="authScreen" class="auth-screen"><div class="auth-card"><div class="brand-mark"><svg><use href="#i-logo"/></svg></div><h1 id="authHeading">登录项目看板</h1><p>一个账号参与多个项目。运营管理需求，开发更新进度，查看人员只读。</p><form id="authForm"><label for="authEmail">工作邮箱</label><input id="authEmail" required type="email" autocomplete="email" placeholder="name@company.com"><label for="authPassword">密码</label><input id="authPassword" required type="password" minlength="6" autocomplete="current-password" placeholder="请输入密码"><button class="btn btn-dark full" id="authSubmit" type="submit">登录看板</button></form><div id="authError" class="auth-error" aria-live="polite"></div><button class="text-link" id="authToggle" type="button">首次使用？注册账号</button><small class="auth-tip">注册前需先由项目负责人添加你的工作邮箱；可能需要验证邮件。</small></div></div>
+<div id="deniedScreen" class="auth-screen" hidden><div class="auth-card"><div class="brand-mark"><svg><use href="#i-logo"/></svg></div><h1>账号尚未加入项目</h1><p id="deniedMessage">请联系管理员或项目负责人，为你的邮箱添加项目权限。</p><button class="btn btn-dark full" type="button" id="retryAccess">重新检查权限</button><button class="text-link" type="button" id="deniedLogout">退出登录</button></div></div>
+
+<dialog id="editDialog" class="modal" aria-labelledby="editDialogTitle"><form id="editForm"><div class="modal-head"><div><h3 id="editDialogTitle">添加需求</h3><p>填写期望结果和验收条件，开发人员可以直接查看。</p></div><button type="button" class="icon-button" data-close="editDialog" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div><div class="modal-content"><div class="field"><label for="taskTitle">需求标题 *</label><input id="taskTitle" maxlength="160" required placeholder="例如：移动端产品主图布局优化"></div><div class="form-pair"><div class="field"><label for="taskCategory">需求分类 *</label><select id="taskCategory" required></select></div><div class="field"><label for="taskPriority">优先级</label><select id="taskPriority"><option value="normal">普通</option><option value="important">重点</option><option value="urgent">加急</option></select></div></div><div class="form-pair"><div class="field"><label for="taskAssignee">开发负责人</label><select id="taskAssignee"><option value="">暂不指定</option></select></div><div class="field"><label for="taskDue">计划完成日期</label><input type="date" id="taskDue"></div></div><div class="field"><label for="taskDescription">需求说明 / 验收条件</label><textarea id="taskDescription" rows="5" placeholder="描述要做什么、为什么做以及怎样算完成…"></textarea></div><div class="field"><label for="taskLinks">参考链接（每行一条）</label><textarea id="taskLinks" rows="3" placeholder="https://example.com"></textarea></div><div class="field"><label for="taskImages">参考图片（单张最多 10MB）</label><input type="file" id="taskImages" accept="image/png,image/jpeg,image/webp" multiple><div class="form-hint">图片保存在 Supabase 私有 Storage，只授权项目成员查看。</div><div id="retainedImages" class="retained-images"></div></div></div><div class="modal-foot"><button type="button" class="btn btn-light" data-close="editDialog">取消</button><button type="submit" class="btn btn-dark" id="saveTaskBtn">保存需求</button></div></form></dialog>
+
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div><aside id="taskDrawer" class="task-drawer" aria-label="需求详情" hidden><div class="drawer-head"><div class="drawer-overline">TASK DETAILS · 需求详情</div><button type="button" id="drawerClose" class="icon-button" aria-label="关闭需求详情"><svg><use href="#i-x"/></svg></button></div><div id="drawerTop" class="drawer-top"></div><div class="drawer-tabs" id="drawerTabs"><button type="button" data-tab="details" class="active">需求说明</button><button type="button" data-tab="activity">进度记录</button></div><div id="drawerBody" class="drawer-body"></div><div id="drawerActions" class="drawer-actions"></div></aside>
+
+<dialog id="settingsDialog" class="modal modal-wide" aria-labelledby="settingsTitle"><div class="modal-head"><div><h3 id="settingsTitle">项目设置</h3><p id="settingsSubtitle">项目资料、需求分类、成员角色与访问范围</p></div><button type="button" class="icon-button" data-close="settingsDialog" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div><div class="settings-tabs" id="settingsTabs"><button data-settings="projects" type="button" class="active">项目</button><button data-settings="categories" type="button">分类</button><button data-settings="members" type="button">成员</button></div><div class="modal-content settings-content" id="settingsBody"></div><div class="modal-foot"><button class="btn btn-light" type="button" data-close="settingsDialog">关闭</button></div></dialog>
+<dialog id="reportDialog" class="modal modal-wide" aria-labelledby="reportTitle"><div class="modal-head"><div><h3 id="reportTitle">项目需求报表</h3><p>项目成员均可查看和下载当前项目的报表。</p></div><button type="button" class="icon-button" data-close="reportDialog" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div><div class="modal-content" id="reportBody"></div><div class="modal-foot"><button type="button" class="btn btn-light" data-close="reportDialog">关闭</button><button type="button" class="btn btn-dark" id="downloadReport"><svg><use href="#i-download"/></svg>下载 CSV</button></div></dialog>
+<dialog id="moveDialog" class="modal modal-small"><form id="moveForm"><div class="modal-head"><h3>调整执行顺序</h3><button type="button" class="icon-button" data-close="moveDialog" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div><div class="modal-content"><p id="moveTaskName" class="hint-block"></p><div class="field"><label for="movePosition">排到第几位（1 为最先）</label><input id="movePosition" type="number" min="1" required></div></div><div class="modal-foot"><button type="button" class="btn btn-light" data-close="moveDialog">取消</button><button class="btn btn-dark" type="submit">确定排序</button></div></form></dialog>
+<dialog id="confirmDialog" class="modal modal-small"><div class="modal-head"><h3 id="confirmTitle">确认操作</h3><button type="button" class="icon-button" data-close="confirmDialog" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div><div class="modal-content"><p id="confirmMessage" class="hint-block"></p></div><div class="modal-foot"><button type="button" class="btn btn-light" data-close="confirmDialog">取消</button><button type="button" id="confirmYes" class="btn btn-dark">确认</button></div></dialog>
+<dialog id="previewDialog" class="preview-dialog"><div class="preview-top"><span>图片预览</span><button type="button" class="icon-button" data-close="previewDialog" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div><img id="previewImage" alt="需求参考图片"><div class="preview-foot"><button type="button" class="btn btn-light" id="previewPrev">上一张</button><span id="previewCount"></span><button type="button" class="btn btn-light" id="previewNext">下一张</button></div></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script><script src="./config.js" defer></script><script src="./app.js" defer></script>
 </body></html>

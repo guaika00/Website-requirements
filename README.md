@@ -1,113 +1,97 @@
-# 网站需求看板 V3 — 多项目协作 / 自由分类 / 需求排期
+# PROJECT TRACKER V4 — 多项目需求协作平台
 
-本项目是在当前已部署的 `https://webrequirements.vercel.app/`（GitHub：`guaika00/Website-requirements`）基础上的**原地升级**，适用于与旅行网站共用同一个 Supabase 项目的情况。
+这是当前 `Website-requirements` 静态项目的升级包，适用于 GitHub + Vercel + Supabase。**和已有 Travel app 共用 Supabase，不会删除或修改旅行行程表、XICHA 注册 Hook。**
 
-**保留现有 `requirements` / `requirement_progress` / `board_assets` / `team_members` 及已有图片。** 不需要删除表、不需要重新导入现有需求。新代码仍是静态网页，Vercel 构建方式不变。
+## 这次新增
 
-## 更新了什么
+- **运营 = 项目负责人**：可以负责多个项目、自己创建新项目、改项目名称、维护分类与需求、排序/加急/重点、安排开发与预计日期、撤回需求、更新进度和最终验收。
+- **开发**：查看授权项目，修改「待开始 / 进行中 / 待验收」状态，标记阻塞，追加文字、完成链接与进度图片；不能覆盖运营的原始需求，也不能自己完成最终验收。
+- **只读角色**：只能查看被分配的项目、历史与需求报表，可导出当前项目 CSV；不能写入、删除或上传。
+- **全局管理员**：访问全部项目、分配运营负责人、归档项目、删除需求、所有日常操作。
+- **新交互**：桌面和手机端项目切换、集中项目设置、抽屉详情、追加式时间线、固定的状态流转、手动排序/桌面拖动、CSV（包含最近反馈）、独立参考素材。
 
-| 功能 | 说明 |
-| --- | --- |
-| 多项目 | 管理员可以创建、重命名、归档项目；左侧切换当前项目，每个项目数据独立 |
-| 项目成员 | 管理员按项目给邮箱分配运营或开发权限；同一员工可以参与多个项目；未分配项目的用户不可见 |
-| 分类管理 | 各项目独立新增、重命名、排序、停用和删除空分类；分类名变更会同步到该项目的原有需求 |
-| 需求优先级 | 普通、重点、加急，支持筛选和优先级排序 |
-| 执行计划 | 每个项目自己的手动顺序（上移、下移、指定位置）；默认按手动顺序展示 |
-| 数据与图片隔离 | Supabase RLS 按项目授权；新图上传到 `projects/{project_uuid}/uploads/`，历史图保留并根据关联项目授权 |
-| 自动同步 | 每 15 秒检查权限和需求变更；另有「同步最新」，无需刷新浏览器 |
-| 报表 | CSV 导出包含项目、排序、优先级、分类、状态和备注 |
+### 状态定义
 
-## 权限模型
+1. **待开始** → 开发 **进行中** → 开发 **提交待验收**。
+2. 运营验收 **已完成**，或填写原因 **退回修改**（进行中）。
+3. **阻塞**为独立标记，可以与进行中并存；开启阻塞需要填写原因。
+4. 「已完成」计入完成率；已撤回需求不计入完成率。原有 `todo/doing/done` 状态保留，V4 扩充 `review`。
 
-- **全局管理员**：`public.team_members.role='admin'`，可以查看所有项目、创建项目、分配成员、删除需求。
-- **运营**：需同时存在于 `team_members` 允许登录名单，以及某个项目的 `board_project_members` 中且角色为 `operator`；只能查看被分配的项目，可以编辑需求、分类、优先级和计划顺序。
-- **开发**：项目成员角色为 `developer`；只能查看被分配的项目，可以更改开发状态与备注，不可修改需求说明。
-- **多人共同负责同一项目**：管理员把多个人分别加入这个项目即可；**不会自动获得其他项目权限**。
+## 四类角色和权限
 
-## 升级操作（一定按顺序）
+| 功能 | admin | operator | developer | viewer |
+|---|---|---|---|---|
+| 查看授权项目 / 报表 / CSV | 是 | 是 | 是 | 是 |
+| 查看所有项目（即使未分配） | 是 | 否 | 否 | 否 |
+| 创建新项目 | 是 | 是 | 否 | 否 |
+| 编辑所负责项目资料 | 是 | 是 | 否 | 否 |
+| 授权开发或只读成员 | 是 | 是 | 否 | 否 |
+| 任命 / 移除另一位运营负责人 | 是 | 否 | 否 | 否 |
+| 归档 / 恢复项目 | 是 | 否 | 否 | 否 |
+| 添加 / 编辑 / 撤回需求与分类 | 是 | 是 | 否 | 否 |
+| 设置重点、加急、开发负责人、截止日期和顺序 | 是 | 是 | 否 | 否 |
+| 更新开发状态、阻塞和备注 | 是 | 是 | 是 | 否 |
+| 提交待验收 | 是 | 是 | 是 | 否 |
+| 最终验收已完成 / 退回修改 | 是 | 是 | 否 | 否 |
+| 追加进度截图或完成链接 | 是 | 是 | 是 | 否 |
+| 永久删除需求 | 是 | 否 | 否 | 否 |
 
-**0. 备份：** 在 Supabase 对现有数据库做好备份，至少确保已保留当前 `requirements`、`requirement_progress`、`team_members` 和相关 Storage 内容。建议先在测试项目验证 SQL，生产执行前确认无其他自建同名数据库对象。
+**运营和开发可以同时属于多个项目，在不同项目拥有不同角色。** 全局角色存于 `team_members`（主要用于管理员以及创建项目资格），项目角色存于 `board_project_members`。RLS 以当前项目角色授权；前端只是交互层，不能替代数据库权限。
 
-**1. 执行迁移 SQL（在原来的 Travel app Supabase 中）：**
+## 先确定你 Supabase 属于哪一种情况
 
-打开 `supabase/upgrade_multi_project.sql`，完整复制到 Supabase → SQL Editor → Run。文件开头是 `BEGIN`，结尾是 `COMMIT`，出错应停止并检查，不要自行删表。**不要重复执行旧版 `supabase/setup.sql` 来修复升级错误。**
-
-这个脚本会：
-- 自动新建默认项目「沃德丰网站」，将以前的需求、进度、2 张独立素材和旧图片关联到此项目；保留原来的 ID 和正文。
-- 将升级瞬间已在旧看板 `team_members` 白名单里的运营、开发成员**一次性**迁入默认项目，以免他们丢失之前的访问权。升级后新加入 `team_members` 的成员**不会**自动加入默认项目。管理员应审核老成员，必要时从默认项目移除。
-- 保留旅行网站的 `xicha_private` 函数、注册 Hook 和所有非需求看板数据库表，不修改原旅行网站业务表。
-- 用新的项目级别 RLS 替换旧版需求表/进度表的全员可见策略。历史 Storage 图片权限也会收紧。
-- 对需求看板的表关闭 `supabase_realtime` PostgreSQL Changes 发布，改为前端每 15 秒授权轮询。**旅行网站其他业务表的 Realtime 设置不会更改。**
-
-执行后可以验证（仅查询，不修改数据）：
+到 Supabase SQL Editor 执行（安全、只读）：
 
 ```sql
-SELECT (SELECT count(*) FROM public.board_projects) AS project_count,
-       (SELECT count(*) FROM public.requirements) AS requirement_count,
-       (SELECT count(*) FROM public.requirement_progress) AS progress_count,
-       (SELECT count(*) FROM public.board_categories) AS category_count;
-SELECT p.name, m.email, m.role FROM public.board_project_members m
-JOIN public.board_projects p ON p.id=m.project_id ORDER BY p.name,m.email;
+SELECT to_regclass('public.board_projects') AS projects,
+       to_regclass('public.board_categories') AS categories,
+       to_regclass('public.board_project_members') AS project_members;
 ```
 
-**2. 上传新版项目到 GitHub：**
+**情况 A：三个都是 `NULL`**（你之前的截图属于这种）。说明你仍是原单项目 V2 数据库。请运行 **`supabase/install_v4_from_v2.sql`**：它将 V3 项目模型和 V4 协作模型放到同一个事务中完成。它不是重建或清空数据库，也不需要运行旧版 `setup.sql`。
 
-仓库 `https://github.com/guaika00/Website-requirements` 保持原名。解压本 ZIP，把里面文件按目录结构**覆盖**原仓库对应文件，尤其是：
+**情况 B：三个表都存在**，并且以前 V3 迁移已经完成。请只运行 **`supabase/upgrade_v4.sql`**。不要在已安装 V3 的数据库执行情况 A 的完整脚本。
 
-- `public/app.js`
-- `public/index.html`
-- `public/style.css`
-- `supabase/upgrade_multi_project.sql`
-- `supabase/setup.sql`（已添加防止误运行旧版建表脚本的保护）
-- `scripts/import-seed.mjs`（如果未来要在空数据库再次导入原 Excel）
+**情况 C：仅部分表存在**：先停止操作，不要试图自己删除表；说明迁移状态不完整，应检查具体 SQL 错误后制定恢复方案。
 
-不要把 ZIP 压缩包本身上传到代码仓库。你已经连接 GitHub 的 Vercel 会自动重新部署；`SUPABASE_URL` 和 `SUPABASE_PUBLISHABLE_KEY` **不需要改**。本项目无服务端 secret 暴露到静态页面。
+### 生产升级步骤
 
-**3. 登录，创建第二个项目：**
+1. **备份**：Supabase 备份原数据库；至少导出 `requirements`、`requirement_progress`、`team_members`、`board_assets`，并确认旧图片 Storage 仍在。重要项目建议先用测试环境演练。
+2. **先升级 SQL**：在原来的 `Travel app` Supabase → SQL Editor → **New query**，粘贴情况 A 或 B 对应 SQL **完整内容**，不要仅执行选中某一行；从 `BEGIN;` 到 `COMMIT;` 一次点击 Run。若报错，整个事务回滚，保留旧表原状；把第一条 SQL 错误贴回来，**不要改用 DROP TABLE**。
+3. **验证**：执行 `supabase/verify_v4.sql`，确认项目表、历史表和 5 个新的 RPC 函数存在。原有任务应在默认「沃德丰网站」项目，老状态和旧备注仍在。
+4. **再部署前端**：解压本项目，按目录覆盖 GitHub 仓库 `guaika00/Website-requirements` 中对应文件，提交到 `main`。Vercel 继续使用已有 `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY`，不需重新创建项目。Vercel 使用 `npm run build`，Output Directory 为 `public`。
+5. **兼容只读成员注册**：如果你的 Supabase 仍使用此前的 `xicha_before_user_created` + `enforce_registration_code` 团队邮箱白名单，且之前执行过我们给的「团队注册兼容修复」，请额外执行 `supabase/allow_viewer_signup.sql`，它只在现有白名单中加入 `viewer`，不会开放旅行网站注册。脚本发现原函数与预期不一致会停止、回滚，切勿手动删除 Hook。
+6. **测试账号**：管理员登录 → 项目设置 → 成员 → 添加运营负责人；运营创建第二个项目，添加一个开发和一个只读邮箱；测试另一个项目是否不可见。用只读用户直接请求别的项目 REST 接口也必须被 RLS 拒绝或返回空集。
 
-管理员用原账号登录，看板左侧出现「当前项目」下拉框和「＋ 项目管理」。点击创建 `WOSADO 官网`、`Aferiy 西班牙站` 或任意名称的新项目，系统会自动创建「常规需求」分类。每个新项目起始没有需求，不会自动读取其他项目的任务。
+### 注意几个关键点
 
-**4. 给每个项目分别授权：**
+- **不要运行** `supabase/setup.sql`：它是历史 V2 初始化文件，不是升级脚本。
+- **不要再次导入旧版 Excel**，除非原数据库确实没有导入任务；迁移不会把本地 `.xlsx` 自动写入数据库。`seed/` 是原始备份，不会公开部署到 Vercel。若旧库空，可在迁移成功后用本地服务密钥运行 `npm run import:seed`，切勿把 `SUPABASE_SECRET_KEY` 提交到 GitHub 或填到公开前端。
+- **旧版 JSON 导入入口已从主界面移除**，以免跨项目覆盖已有进度。
+- **共用账号和注册限制**：旧旅行网站的 XICHA 注册码 Hook 仍然存在，V4 主迁移不会修改它。此前的团队免邀请码函数原本只允许 admin/operator/developer，**新 viewer 无法注册**；按上面步骤执行单独的 `allow_viewer_signup.sql`（必须先确认原注册兼容函数与预期一致），不要删除旅行网站 Hook。
+- 图片放在私有 `requirements-private` Bucket；新文件存储在 `projects/{project_id}/uploads/` 下，按项目授权。不要把图片上传到公开 GitHub。
+- 前端用 **每 20 秒授权查询**，避免依赖可能泄露 DELETE 元数据的跨项目广播。签名图片 URL 只短期有效；已产生的 URL 在到期前可能仍可访问。
+- PostgreSQL 同一表的多条 permissive RLS Policy 可以合并放行，若你额外创建过同名业务表的自定义宽权限政策，必须通过 `verify_v4.sql` 检查并处理。
+- 最新进度通过 `board_activity` **追加记录**；旧 `requirement_progress.note` 字段不会删除，历史旧备注仍可在时间线看到。CSV 会带最近的反馈和旧备注；若单项目反馈记录超过 1000 条，CSV 的“最近反馈”字段只能覆盖按时间倒序取到的前 1000 条（其他数据仍在数据库中）。
 
-切换到一个项目后，点击「项目成员」→ 输入运营的邮箱 → 选择该项目的角色 → 添加。若该邮箱原来不在 `team_members`，会同时添加进登录白名单。若运营已注册，可直接登录；未注册用户仍要完成 Supabase Auth 注册或邀请流程（原旅行网站的注册码限制需要与你前面实施的兼容注册 SQL 保持一致）。
-
-举例：
-- 运营 A 只加入「沃德丰网站」→ 看不到 WOSADO 项目及其任务/图片；
-- 运营 B 只加入「WOSADO 官网」→ 看不到沃德丰项目；
-- 运营 A + B 都加入某一个项目 → 双方能共同查看与编辑那个项目；
-- 开发 C 同时加入两个项目 → 可以分别更新两个项目的进度。
-
-**5. 添加分类和设定排期：**
-
-切换到对应项目 →「分类管理」添加任何名称；需求卡片下方的优先级可以快速设为「重点 / 加急」。右侧 `↑ / ↓` 调整顺序，展开需求详情可以「调整执行位置」直接输入任务在当前项目中的排位（第一位代表先做）。在「新增需求」对话框里也能填写优先级和计划排位。该位置按**整个项目**排序，不按单一分类单独编号。
-
-## 旧数据与导入工具
-
-原来从 Excel 导入的 19 条需求**若已经进库**，迁移 SQL 会保留，不要重复导入。旧版「沃德丰网站需求_一键导入Supabase_20261019.html」是按旧表设计的：迁移后**不要再使用旧 HTML 导入器**（会缺少项目字段）。如需在空数据库重新导入，先完成 `supabase/setup.sql`（仅空数据库）、再运行 `upgrade_multi_project.sql`，然后在自己的电脑执行 `npm run import:seed`，需要 `.env.local` 里的 `SUPABASE_SECRET_KEY`；**不要把 Secret Key 放进 GitHub/Vercel 或浏览器**。
-
-`seed/` 中 19 条需求和 34 张图片保留用于本地备份，**不会部署到 Vercel 的 public 目录**。已有项目、图片和状态不会因推送新代码而消失。
-
-## 注意和验证限制
-
-- 这里的 UI 与增删改逻辑已经通过**本地模拟 Supabase**的桌面、手机测试；**真实 Supabase SQL 执行、RLS 权限和 Storage 上传仍需在你的项目进行实际验证**。建议准备两个运营测试邮箱，分别分配到不同项目，验证每个用户从页面和 REST API 都看不到另一项目的数据。
-- **身份验证不等于项目访问授权**，项目权限由数据库 RLS 负责。授权变更最多约 15 秒会在已打开的网页生效。文件签名 URL 在其原有有效期内仍可能可访问（新版新签名有效期 30 分钟）。
-- 默认按项目顺序显示；切换「按优先级」只改变显示排序，不会覆盖手动的计划顺序。
-- 分类「停用」不会删除旧需求；分类有任务时不允许删除，先移动需求。
-- 同一个 Supabase Auth 账号可以登录两个应用，但登录会话是否在跨域网站共享属于前端会话设计，不会自动实现统一 SSO。
-- **不要删除旅行网站表、`xicha_private` 注册函数或 Auth Hook**。迁移仅处理需求看板相关表、策略、图片桶策略与该看板的 Realtime 表发布。
-- 如果 Supabase 还有你自行创建的其他 RLS/Storage 策略，需要额外审查它们是否会扩大访问权限，因为多条宽松策略会按 OR 组合。
-
-## 结构
+## 项目文件
 
 ```text
-public/index.html          页面和弹窗
-public/style.css           原风格 + 多项目样式
-public/app.js              多项目协作前端
-public/config.js           Vercel build 时生成 publishable key 公开配置
-supabase/setup.sql         带 v3 保护的旧版首次初始化 SQL
-supabase/upgrade_multi_project.sql    本次迁移 SQL（先执行）
-scripts/import-seed.mjs    仅初始化的本地数据导入脚本
-seed/requirements.json    原 Excel 数据备份
-seed/images/              参考图片备份
-package.json / vercel.json
+public/index.html             桌面与手机界面
+public/style.css              布局与响应式样式
+public/app.js                 Supabase 登录、授权数据读写、页面交互
+public/config.js              Vercel 构建生成的前端公开配置（不含 secret）
+supabase/install_v4_from_v2.sql  从 V2 直接升级的完整迁移（优先用于你之前的情况）
+supabase/upgrade_v4.sql       已有 V3 时增量升级
+supabase/verify_v4.sql        升级后只读检查
+supabase/allow_viewer_signup.sql  只读角色注册的可选兼容 SQL
+supabase/upgrade_multi_project.sql  历史 V3 迁移，仅参考，不要和 V4 SQL 混用
+scripts/build-config.mjs      生成 Vercel 公开配置
+scripts/import-seed.mjs       空需求库的本地一次性导入脚本（需要本地 service secret）
+seed/                         原 Excel 的 19 条需求和 34 张参考图备份
 ```
+
+## 已完成的验证、未完成的验证
+
+- 完成：`node --check` JS 语法检查；使用模拟 Supabase 会话测试 admin/operator/developer/viewer 四种界面，任务列表、详情时间线、项目设置、手机端无横向溢出。
+- **尚未完成**：在你的真实 Supabase 执行 SQL、逐角色验证数据库 RLS / Storage / RPC；Vercel 真实环境联调。上线前务必以测试账号验证。
