@@ -116,9 +116,6 @@ BEGIN
     RAISE EXCEPTION 'Invalid email address';
   END IF;
   IF p_role NOT IN ('operator','developer','viewer') THEN RAISE EXCEPTION 'Invalid project member role'; END IF;
-  IF NOT public.board_global_admin() AND EXISTS (SELECT 1 FROM public.team_members tm WHERE tm.email=v_email AND tm.role IN ('admin','manager')) THEN
-    RAISE EXCEPTION 'Only the global admin can manage global admin/manager accounts';
-  END IF;
   SELECT role INTO old_role FROM public.board_project_members
     WHERE project_id=p_project AND email=v_email FOR UPDATE;
   INSERT INTO public.team_members(email,role,display_name)
@@ -139,9 +136,6 @@ DECLARE v_email text;
 BEGIN
   IF NOT public.board_can_manage_members(p_project) THEN RAISE EXCEPTION 'Cannot manage this project'; END IF;
   v_email:=lower(btrim(coalesce(p_email,'')));
-  IF NOT public.board_global_admin() AND EXISTS (SELECT 1 FROM public.team_members tm WHERE tm.email=v_email AND tm.role IN ('admin','manager')) THEN
-    RAISE EXCEPTION 'Only the global admin can manage global admin/manager accounts';
-  END IF;
   UPDATE public.requirements SET assignee_email=NULL
     WHERE project_id=p_project AND assignee_email=v_email;
   DELETE FROM public.board_project_members
@@ -232,7 +226,7 @@ REVOKE ALL ON FUNCTION public.board_create_project(text,text),public.board_assig
   public.board_remove_member(uuid,text),public.board_transition_task(text,text,boolean,text),
   public.board_add_comment(text,text,text[],text) FROM PUBLIC,anon;
 GRANT EXECUTE ON FUNCTION public.board_create_project(text,text),public.board_assign_member(uuid,text,text),
-  public.board_remove_member(uuid,text),public.board_transition_task(text,text,boolean,text),
+  public.board_remove_member(uuid,text,text),public.board_transition_task(text,text,boolean,text),
   public.board_add_comment(text,text,text[],text) TO authenticated;
 
 NOTIFY pgrst,'reload schema';
