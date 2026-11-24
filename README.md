@@ -1,9 +1,44 @@
-# V4.1 Manager role patch
+# Project Tracker V5 · 协作中心
 
-1. Back up your shared Supabase project.
-2. Run `supabase/upgrade_manager_role.sql` in the V4.1 Supabase project. It grants `yukilulumark@gmail.com` the global `manager` role.
-3. Run `supabase/verify_manager_role.sql` to confirm the role and helper functions.
-4. If this email has not registered and the XICHA registration-code hook still rejects team emails, run `supabase/allow_manager_team_signup.sql` as a separate optional patch.
-5. Replace `public/app.js` in GitHub with this file and commit to `main`; Vercel redeploys automatically.
+本次在 V4.1（含 `manager` 普通管理员角色）基础上增加：
 
-`admin` remains the top-level administrator. `manager` can manage all projects and project members, but cannot manage global admin/manager accounts.
+- 项目工作台：按当前账号有权限的项目汇总需求总量、完成率、待验收、阻塞和加急事项。
+- 任务讨论：需求详情内新增讨论页，支持评论、回复，以及从当前项目成员列表选择 `@` 提及对象。
+- 站内通知：评论、@提及、进度活动写入个人通知中心；用户只能读取和标记自己的通知。
+- 需求变更历史：需求字段更新时自动保存修改前后 JSON 快照，供授权项目成员查看。
+
+## 升级前提
+
+1. 数据库已成功执行 V4 + V4.1。
+2. 如使用普通管理员 `manager`，已执行 `supabase/upgrade_manager_role.sql`。
+3. 当前前端已使用 V4.1 对应代码及 Supabase URL / Publishable Key。
+
+## 数据库升级
+
+1. 先备份共享 Supabase 项目。
+2. 在 Supabase SQL Editor 新建查询，完整执行 `supabase/upgrade_v5_collaboration.sql`。
+3. 执行 `supabase/verify_v5.sql`。三张表、四个触发器及 RLS policy 均应返回。
+4. 若 V5 migration 失败，先停止，不要更新前端；把第一条 SQL 错误完整发回排查。
+
+迁移仅创建/修改 `board_*` 看板对象，不改旅行网站业务表、Auth 用户、XICHA 注册 Hook 或旅行网站 Storage 权限。
+
+## 前端部署
+
+1. 将补丁中的 `public/index.html`、`public/app.js`、`public/style.css` 按原路径覆盖 GitHub 仓库。
+2. Commit 到 `main`，等待 Vercel 部署成功。
+3. 强制刷新浏览器后测试：工作台、评论、回复、@提及、通知已读、需求变更历史。
+
+## 权限说明
+
+- Dashboard 的项目列表来自当前登录用户的项目授权列表；聚合查询仍受原项目 RLS 保护。
+- 评论仅授权项目成员可见；有进度权限的成员可发表评论。
+- 通知只允许收件人本人读取和更新 `is_read`。
+- 需求版本仅授权项目成员可读，版本由数据库触发器自动写入，客户端无直接写入权限。
+- `@` 提及仅对当前项目成员生效；通知触发器不向任意外部邮箱发送消息。
+
+## 已知边界
+
+- 当前 V5 是站内协作第一阶段，不包含邮件推送、浏览器 Push、附件上传到评论、评论编辑 UI 或复杂的多层线程折叠。
+- 评论回复支持单层 parent 关联，UI 以时间顺序展示。
+- Dashboard 统计按用户当前可见项目计算；项目成员变更后重新载入页面即可刷新。
+- 本包完成静态代码检查；SQL 尚未在用户的真实 Supabase 实例执行，需按上述步骤验证。
